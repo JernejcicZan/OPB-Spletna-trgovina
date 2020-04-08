@@ -1,4 +1,4 @@
 # OPB-Spletna-trgovina
 Projekt pri OPB
 
-![ER](ER_diagram.PNG)
+![ER_diagram](ER_diagram.png)
