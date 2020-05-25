@@ -2,14 +2,15 @@ import sqlite3
 import csv
 import auth_public as auth
 
-
+import psycopg2, psycopg2.extensions, psycopg2.extras
+psycopg2.extensions.register_type(psycopg2.extensions.UNICODE) # se znebimo problemov s šumniki
 
 baza_datoteka = 'trgovina.db'
 
 def uvoziSQL(cur, datoteka):
     with open(datoteka) as f:
         koda = f.read()
-        cur.executescript(koda)
+        cur.execute(koda)
 
 
 
@@ -22,8 +23,12 @@ def uvoziCSV(cur, tabela):
         cur.executemany("INSERT INTO {0} ({1}) VALUES ({2})".format(
             tabela, ",".join(glava), ",".join(['?']*len(glava))), vrstice)
 
-with sqlite3.connect(baza_datoteka) as baza:
-    cur = baza.cursor()
-    uvoziSQL(cur, 'trgovina.sql')
-    uvoziCSV(cur, 'uporabniki')
-    uvoziCSV(cur, 'artikli')
+conn = psycopg2.connect(database=auth.db, host=auth.host, user=auth.user, password=auth.password)
+cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor) 
+
+
+#with sqlite3.connect(baza_datoteka) as baza:
+    #cur = baza.cursor()
+uvoziSQL(cur, 'trgovina.sql')
+uvoziCSV(cur, 'uporabniki')
+uvoziCSV(cur, 'artikli')
