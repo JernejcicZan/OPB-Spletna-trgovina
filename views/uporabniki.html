@@ -1,0 +1,38 @@
+<html>
+<head> 
+    <title>Uporabniki</title> 
+</head>
+<body>
+    <h2>Uporabniki spletne trgovine</h2>
+
+    <form action="uporabniki/dodaj" method="post">
+    <span>id:</span> <input name="id" type="number" />
+    <span>Ime:</span> <input name="Ime" type="text" />
+    <span>Priimek:</span> <input name="Priimek" type="text" />
+    <span>Naslov:</span> <input name="Naslov" type="text" />
+    <span>Zaposlen:</span> <input name="Zaposlen" type="text"/>
+    <input value="Dodaj" type="submit"/>
+    </form>
+
+<table cellpadding="0" cellspacing="0" border="1">
+    <tr>
+        <th>id</th>
+        <th>Ime</th>
+        <th>Priimek</th>
+        <th>Naslov</th>
+        <th>Zaposlen</th>
+  </tr>
+
+  %for (id,Ime,Priimek,Naslov,Zaposlen) in uporabniki:
+    <tr>
+       <td>{{id}}</td>
+       <td>{{Ime}}</td>
+       <td>{{Priimek}}</td>
+       <td>{{Naslov}}</td>
+       <td>{{Zaposlen}}</td>
+    </tr>
+  %end
+</table>
+
+</body>
+</html>
