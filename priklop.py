@@ -27,7 +27,7 @@ def static(filename):
 
 @get('/')
 def index():
-    return('Začetna stran')
+    return rtemplate('zacetna.html')
 
 @get('/uporabniki')
 def uporabniki_get():
@@ -39,26 +39,37 @@ def artikli_get():
     cur.execute("SELECT * FROM artikli")
     return rtemplate('artikli.html', artikli=cur)
 
-
-@post('/uporabniki/dodaj')
+@get('/dodaj_uporabnika')
 def dodaj_uporabnika():
-    id = request.get.forms('id')
-    Ime = request.get.forms('Ime')
-    Priimek = request.get.forms('Priimek')
-    Naslov = request.get.forms('Naslov')
-    Zaposlen = request.get.forms('Zaposlen')
-    cur.execute("INSERT INTO uporabniki(id,Ime,Priimek,Naslov,Zaposlen) VALUES(,?,?,?,?)",(id, Ime,Priimek,Naslov,Zaposlen))
+    return rtemplate('dodaj_uporabnika.html', id='', Ime='', Priimek='', Naslov='', Zaposlen='')
+
+
+@post('/dodaj_uporabnika')
+def dodaj_uporabnika():
+    id = request.forms.id
+    Ime = request.forms.Ime
+    Priimek = request.forms.Priimek
+    Naslov = request.forms.Naslov
+    Zaposlen = request.forms.Zaposlen
+    cur.execute("INSERT INTO uporabniki (id,Ime,Priimek,Naslov,Zaposlen) VALUES (%s, %s, %s, %s, %s)", 
+                (id,Ime,Priimek,Naslov,Zaposlen))
+    conn.commit()
     redirect('/uporabniki')
 
-@post('/artikli/dodaj')
+@get('/dodaj_artikel')
 def dodaj_artikel():
-    id = request.get.forms('id')
-    Izdelek = request.get.forms('Izdelek')
-    Cena = request.get.forms('Cena')
-    Zaloga = request.get.forms('Zaloga')
-    cur.execute("INSERT INTO artikli(id,Izdelek,Zaloga,Cena) VALUES(%s,%s,%s,%s)",(id,Izdelek,Zaloga,Cena))
-    conn.commit()
-        
+    return rtemplate('dodaj_artikel.html', id='', Izdelek='', Zaloga='', Cena='')
+
+
+@post('/dodaj_artikel')
+def dodaj_artikel():
+    id = request.forms.id
+    Izdelek = request.forms.Izdelek
+    Zaloga = request.forms.Zaloga
+    Cena = request.forms.Cena
+    cur.execute("INSERT INTO artikli(id,Izdelek,Zaloga,Cena) VALUES(%s,%s,%s,%s)",
+                (id,Izdelek,Zaloga,Cena))
+    conn.commit()   
     redirect('/artikli')
 
 

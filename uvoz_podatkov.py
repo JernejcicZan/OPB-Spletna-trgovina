@@ -5,7 +5,6 @@ import auth_public as auth
 import psycopg2, psycopg2.extensions, psycopg2.extras
 psycopg2.extensions.register_type(psycopg2.extensions.UNICODE) # se znebimo problemov s šumniki
 
-#baza_datoteka = 'trgovina.db'
 
 def uvoziSQL(cur, datoteka):
     with open(datoteka) as f:
@@ -27,8 +26,6 @@ conn = psycopg2.connect(database=auth.db, host=auth.host, user=auth.user, passwo
 cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor) 
 
 
-#with sqlite3.connect(baza_datoteka) as baza:
-    #cur = baza.cursor()
 uvoziSQL(cur, 'trgovina.sql')
 uvoziCSV(cur, 'uporabniki')
 uvoziCSV(cur, 'artikli')

@@ -1,0 +1,15 @@
+%rebase('osnova.html', naslov='Dodaj artikel')
+
+Dodajanje novega uporabnika
+
+
+
+<form action="{{ROOT}}dodaj_uporabnika" method="POST">
+    <p>id: <input name="id" type="text" value="{{id}}"></p>
+    <p>Ime: <input name="Ime" type="text" value="{{Ime}}"></p>
+    <p>Priimek: <input name="Priimek" type="text" value="{{Priimek}}"></p>
+    <p>Naslov: <input name="Naslov" type="text" value="{{Naslov}}"></p>
+    <p>Zaposlen: <input name="Zaposlen" type="text" value="{{Zaposlen}}"></p>
+    <p><input value="Dodaj uporabnika" type="submit"> </p> 
+</form>
+
