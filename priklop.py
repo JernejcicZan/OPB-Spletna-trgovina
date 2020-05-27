@@ -2,6 +2,7 @@ from bottle import *
 
 import auth_public as auth
 import sqlite3
+from datetime import date,timedelta
 
 import psycopg2, psycopg2.extensions, psycopg2.extras
 psycopg2.extensions.register_type(psycopg2.extensions.UNICODE) 
@@ -72,7 +73,27 @@ def dodaj_artikel():
     conn.commit()   
     redirect('/artikli')
 
+@get('/oddaj_narocilo')
+def oddaj_narocilo():
+    return rtemplate('oddaj_narocilo.html', id_uporabnika='',izdelek='',kolicina='',posiljanje='',nacin_placila='')
 
+@post('/oddaj_narocilo')
+def oddaj_narocilo():
+    uporabnik = request.forms.id_uporabnika
+    izdelek = request.forms.izdelek
+    kolicina = request.forms.kolicina
+    posiljanje = request.forms.posiljanje
+    nacin_placila = request.forms.nacin_placila
+    cur.execute("SELECT Cena FROM artikli WHERE id = %s" %int(izdelek))
+    cena_izdelka = cur.fetchone()[0]
+    cur.execute("INSERT INTO narocila(uporabnik,izdelek,datum,kolicina,posiljanje,rok_placila,nacin_placila,popust,cena) VALUES(%s,%s,%s,%s,%s,%s,%s,0,%s)",
+                (uporabnik, izdelek, date.today(), kolicina,posiljanje,date.today()+timedelta(days=10), nacin_placila, int(kolicina)*cena_izdelka))
+    conn.commit()   
+
+@get('/narocila')
+def narocila():
+    cur.execute("SELECT * FROM narocila")
+    return rtemplate('narocila.html', narocila=cur)
 
 conn = psycopg2.connect(database=auth.db, host=auth.host, user=auth.user, password=auth.password, port=DB_PORT)
 #conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) # onemogočimo transakcije

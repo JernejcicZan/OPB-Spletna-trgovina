@@ -1,0 +1,11 @@
+%rebase('osnova.html', naslov='Oddaj narocilo')
+
+
+<form action="{{ROOT}}oddaj_narocilo" method="POST">
+    <p>Id uporabnika: <input name="id_uporabnika" type="text" value="{{id_uporabnika}}"></p>
+    <p>Artikel: <input name="izdelek" type="text" value="{{izdelek}}"></p>
+    <p>Količina: <input name="kolicina" type="text" value="{{kolicina}}"></p>
+    <p>Pošiljanje: <input name="posiljanje" type="text" value="{{posiljanje}}"></p>
+    <p>Način plačila: <input name="nacin_placila" type="text" value="{{nacin_placila}}"></p>
+    <p><input value="Dodaj artikel" type="submit"> </p> 
+</form>
