@@ -1,0 +1,8 @@
+%rebase('osnova.html', naslov='Povečaj zalogo')
+
+
+<form action="{{ROOT}}povecaj_zalogo" method="POST">
+    <p>Id artikla: <input name="id" type="text" value="{{id}}"></p>
+    <p>Količina: <input name="kolicina" type="text" value="{{kolicina}}"></p>
+    <p><input value="Povečaj zalogo" type="submit"> </p> 
+</form>

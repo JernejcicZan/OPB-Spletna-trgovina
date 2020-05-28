@@ -37,7 +37,7 @@ def uporabniki_get():
 
 @get('/artikli')
 def artikli_get():
-    cur.execute("SELECT * FROM artikli")
+    cur.execute("SELECT * FROM artikli ORDER BY id")
     return rtemplate('artikli.html', artikli=cur)
 
 @get('/dodaj_uporabnika')
@@ -86,14 +86,32 @@ def oddaj_narocilo():
     nacin_placila = request.forms.nacin_placila
     cur.execute("SELECT Cena FROM artikli WHERE id = %s" %int(izdelek))
     cena_izdelka = cur.fetchone()[0]
+    cur.execute("UPDATE artikli SET Zaloga = Zaloga - %s WHERE id = %s",(int(kolicina),int(izdelek)))
     cur.execute("INSERT INTO narocila(uporabnik,izdelek,datum,kolicina,posiljanje,rok_placila,nacin_placila,popust,cena) VALUES(%s,%s,%s,%s,%s,%s,%s,0,%s)",
                 (uporabnik, izdelek, date.today(), kolicina,posiljanje,date.today()+timedelta(days=10), nacin_placila, int(kolicina)*cena_izdelka))
     conn.commit()   
+    redirect('/narocila')
+        
 
 @get('/narocila')
 def narocila():
     cur.execute("SELECT * FROM narocila")
     return rtemplate('narocila.html', narocila=cur)
+
+@get('/povecaj_zalogo')
+def povecaj_zalogo():
+    return rtemplate('povecaj_zalogo.html', id='', kolicina='')
+
+
+@post('/povecaj_zalogo')
+def povecaj():
+    id = request.forms.id
+    kolicina = request.forms.kolicina
+    cur.execute("UPDATE artikli SET Zaloga = Zaloga + %s WHERE id = %s",(int(kolicina), int(id)))
+    conn.commit()
+    redirect('/artikli')
+
+
 
 conn = psycopg2.connect(database=auth.db, host=auth.host, user=auth.user, password=auth.password, port=DB_PORT)
 #conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) # onemogočimo transakcije
