@@ -1,10 +1,13 @@
-%rebase('osnova.html', naslov='Dodaj uporabnika')
+%rebase('baza.html', naslov='Nov uporabnik')
 
 <p>
     <a href="{{ROOT}}">Nazaj na prvo stran</a>
 </p>
 
-Dodajanje novega uporabnika
+<p>Dodajanje novega uporabnika</p>
+
+
+
 
 
 <form action="{{ROOT}}dodaj_uporabnika" method="POST">
@@ -13,6 +16,11 @@ Dodajanje novega uporabnika
     <p>Priimek: <input name="Priimek" type="text" value="{{Priimek}}"></p>
     <p>Naslov: <input name="Naslov" type="text" value="{{Naslov}}"></p>
     <p>Zaposlen: <input name="Zaposlen" type="text" value="{{Zaposlen}}"></p>
-    <p><input value="Dodaj uporabnika" type="submit"> </p> 
+    <center>
+        <button class="myButton" type="submit" >
+            Dodaj uporabnika
+        </button>
+    </center>
+
 </form>
 

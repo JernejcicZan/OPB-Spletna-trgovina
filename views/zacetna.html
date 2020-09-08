@@ -1,28 +1,31 @@
-%rebase('osnova.html', naslov='Začetna stran')
-
-Pozdravljeni v spletni trgovini.
+%rebase('baza.html', naslov='Začetna stran')
 
 
-<p>
-    <a href="{{ROOT}}uporabniki">Seznam uporabnikov</a>
+
+<p style="text-align:center;">
+Če še niste prijavljeni potem se registrirajte.
+</p>
+<center>
+    <a href="{{ROOT}}dodaj_uporabnika" class="myButton" >Registracija novega uporabnika</a>
+</center>
+
+<p style="text-align:center;">
+    Sicer pa si lahko ogledate ponubo izdelkov in oddate svoje naročilo.
 </p>
 
-<p>
-    <a href="{{ROOT}}artikli">Seznam artiklov</a>
-</p>
+
+<center>
 
 <p>
-    <a href="{{ROOT}}dodaj_uporabnika">Dodaj uporabnika</a>
+    <a href="{{ROOT}}artikli" class="myButton">Seznam izdelkov</a>
 </p>
+</center>
+
+<center>
 
 <p>
-    <a href="{{ROOT}}dodaj_artikel">Dodaj artikel</a>
+    <a href="{{ROOT}}oddaj_narocilo" class="myButton">Oddaj naročilo</a>
 </p>
+</center>
 
-<p>
-    <a href="{{ROOT}}povecaj_zalogo">Povečaj zalogo</a>
-</p>
 
-<p>
-    <a href="{{ROOT}}oddaj_narocilo">Oddaj naročilo</a>
-</p>

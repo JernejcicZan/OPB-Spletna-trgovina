@@ -14,11 +14,15 @@ RELOADER = os.environ.get('BOTTLE_RELOADER', True)
 ROOT = os.environ.get('BOTTLE_ROOT', '/')
 DB_PORT = os.environ.get('POSTGRES_PORT', 5432)
 
+
+
 def rtemplate(*largs, **kwargs):
     """
     Izpis predloge s podajanjem spremenljivke ROOT z osnovnim URL-jem.
     """
     return template(ROOT=ROOT, *largs, **kwargs)
+
+
 
 static_dir = "./static"
 @route("/static/<filename:path>")
@@ -43,6 +47,7 @@ def artikli_get():
 @get('/dodaj_uporabnika')
 def dodaj_uporabnika():
     return rtemplate('dodaj_uporabnika.html', id='', Ime='', Priimek='', Naslov='', Zaposlen='')
+
 
 
 @post('/dodaj_uporabnika')
@@ -118,5 +123,5 @@ conn = psycopg2.connect(database=auth.db, host=auth.host, user=auth.user, passwo
 cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
 # poženemo strežnik na podanih vratih, npr. http://localhost:8080/
-run(host='localhost', port=SERVER_PORT, reloader=RELOADER)
+run(host='localhost', port=SERVER_PORT, reloader=True)
 
