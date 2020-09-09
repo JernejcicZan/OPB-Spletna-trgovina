@@ -5,15 +5,17 @@
     <a href="{{ROOT}}">Nazaj na prvo stran</a>
 </p>
 
-
+<p>
 Dodajanje novega artikla
-
+</p>
 
 <form action="{{ROOT}}dodaj_artikel" method="POST">
     <p>id: <input name="id" type="text" value="{{id}}"></p>
     <p>Izdelek: <input name="Izdelek" type="text" value="{{Izdelek}}"></p>
     <p>Zaloga: <input name="Zaloga" type="text" value="{{Zaloga}}"></p>
     <p>Cena: <input name="Cena" type="text" value="{{Cena}}"></p>
-    <p><input value="Dodaj artikel" type="submit"> </p> 
+    <p><button class="myButton" type="submit" >
+        Dodaj artikel
+    </button>  </p> 
 </form>
 
