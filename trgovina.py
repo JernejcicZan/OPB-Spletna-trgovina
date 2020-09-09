@@ -60,7 +60,7 @@ def dodaj_uporabnika():
         cur.execute("INSERT INTO uporabniki (id, Ime,Priimek,Naslov,Zaposlen) VALUES ((SELECT MAX(id) FROM uporabniki) +1, %s, %s, %s, %s)", 
                 (Ime,Priimek,Naslov,Zaposlen))
         conn.commit()
-        redirect('/uporabniki')
+        redirect('{0}uporabniki/'.format(ROOT))
     except:
         conn.rollback()
         return rtemplate('dodaj_uporabnika.html',  Ime='', Priimek='', Naslov='', Zaposlen='')
@@ -80,7 +80,7 @@ def dodaj_artikel():
         cur.execute("INSERT INTO artikli(id,Izdelek,Zaloga,Cena) VALUES((SELECT MAX(id) FROM artikli) +1,%s,%s,%s)",
                 (Izdelek,Zaloga,Cena))
         conn.commit()   
-        redirect('/artikli')
+        redirect('{0}artikli/'.format(ROOT))
     except:
         conn.rollback()
         return rtemplate('dodaj_artikel.html', id='', Izdelek='', Zaloga='', Cena='')
@@ -104,7 +104,7 @@ def oddaj_narocilo():
         cur.execute("INSERT INTO narocila(stevilka_narocila, uporabnik,izdelek,datum,kolicina,posiljanje,rok_placila,nacin_placila, cena) VALUES(DEFAULT, %s,%s,%s,%s,%s,%s,%s,%s)",
                     (uporabnik, izdelek, date.today(), kolicina,posiljanje,date.today()+timedelta(days=10), nacin_placila, int(kolicina)*cena_izdelka))
         conn.commit()   
-        redirect('/narocila')
+        redirect('{0}narocila/'.format(ROOT))
     except: 
         conn.rollback()
         return rtemplate('oddaj_narocilo.html', id_uporabnika='',izdelek='',kolicina='',posiljanje='',nacin_placila='')
@@ -128,7 +128,7 @@ def povecaj():
     try:
         cur.execute("UPDATE artikli SET Zaloga = Zaloga + %s WHERE id = %s",(int(kolicina), int(id)))
         conn.commit()
-        redirect('/artikli')
+        redirect('{0}artikli/'.format(ROOT))
     except:
         conn.rollback()
         return rtemplate('povecaj_zalogo.html', id='', kolicina='')
