@@ -46,24 +46,24 @@ def artikli_get():
 
 @get('/dodaj_uporabnika')
 def dodaj_uporabnika():
-    return rtemplate('dodaj_uporabnika.html', id='', Ime='', Priimek='', Naslov='', Zaposlen='')
+    return rtemplate('dodaj_uporabnika.html', Ime='', Priimek='', Naslov='', Zaposlen='')
 
 
 
 @post('/dodaj_uporabnika')
 def dodaj_uporabnika():
-    id = request.forms.id
     Ime = request.forms.Ime
     Priimek = request.forms.Priimek
     Naslov = request.forms.Naslov
     Zaposlen = request.forms.Zaposlen
-    if id == '' or Ime == '' or Priimek == ''  or Naslov == '' or Zaposlen == '' :
-        return rtemplate('dodaj_uporabnika.html', id='', Ime='', Priimek='', Naslov='', Zaposlen='')
-    else:
-        cur.execute("INSERT INTO uporabniki (id,Ime,Priimek,Naslov,Zaposlen) VALUES (%s, %s, %s, %s, %s)", 
-                (id,Ime,Priimek,Naslov,Zaposlen))
+    try:
+        cur.execute("INSERT INTO uporabniki (id, Ime,Priimek,Naslov,Zaposlen) VALUES ((SELECT MAX(id) FROM uporabniki) +1, %s, %s, %s, %s)", 
+                (Ime,Priimek,Naslov,Zaposlen))
         conn.commit()
         redirect('/uporabniki')
+    except:
+        conn.rollback()
+        return rtemplate('dodaj_uporabnika.html',  Ime='', Priimek='', Naslov='', Zaposlen='')
 
 @get('/dodaj_artikel')
 def dodaj_artikel():
@@ -76,13 +76,15 @@ def dodaj_artikel():
     Izdelek = request.forms.Izdelek
     Zaloga = request.forms.Zaloga
     Cena = request.forms.Cena
-    if id == '' or Izdelek == '' or Zaloga == '' or Cena == '':
-        return rtemplate('dodaj_artikel.html', id='', Izdelek='', Zaloga='', Cena='')
-    else:
-        cur.execute("INSERT INTO artikli(id,Izdelek,Zaloga,Cena) VALUES(%s,%s,%s,%s)",
-                (id,Izdelek,Zaloga,Cena))
+    try:
+        cur.execute("INSERT INTO artikli(id,Izdelek,Zaloga,Cena) VALUES((SELECT MAX(id) FROM artikli) +1,%s,%s,%s)",
+                (Izdelek,Zaloga,Cena))
         conn.commit()   
         redirect('/artikli')
+    except:
+        conn.rollback()
+        return rtemplate('dodaj_artikel.html', id='', Izdelek='', Zaloga='', Cena='')
+
 
 @get('/oddaj_narocilo')
 def oddaj_narocilo():
@@ -95,16 +97,18 @@ def oddaj_narocilo():
     kolicina = request.forms.kolicina
     posiljanje = request.forms.posiljanje
     nacin_placila = request.forms.nacin_placila
-    if uporabnik == '' or izdelek == '' or kolicina == '' or posiljanje == '' or nacin_placila == '':
-        return rtemplate('oddaj_narocilo.html', id_uporabnika='',izdelek='',kolicina='',posiljanje='',nacin_placila='')
-    else:
+    try:
         cur.execute("SELECT Cena FROM artikli WHERE id = %s" %int(izdelek))
         cena_izdelka = cur.fetchone()[0]
         cur.execute("UPDATE artikli SET Zaloga = Zaloga - %s WHERE id = %s",(int(kolicina),int(izdelek)))
-        cur.execute("INSERT INTO narocila(uporabnik,izdelek,datum,kolicina,posiljanje,rok_placila,nacin_placila,popust,cena) VALUES(%s,%s,%s,%s,%s,%s,%s,0,%s)",
+        cur.execute("INSERT INTO narocila(stevilka_narocila, uporabnik,izdelek,datum,kolicina,posiljanje,rok_placila,nacin_placila, cena) VALUES(DEFAULT, %s,%s,%s,%s,%s,%s,%s,%s)",
                     (uporabnik, izdelek, date.today(), kolicina,posiljanje,date.today()+timedelta(days=10), nacin_placila, int(kolicina)*cena_izdelka))
         conn.commit()   
         redirect('/narocila')
+    except: 
+        conn.rollback()
+        return rtemplate('oddaj_narocilo.html', id_uporabnika='',izdelek='',kolicina='',posiljanje='',nacin_placila='')
+
         
 
 @get('/narocila')
@@ -120,13 +124,14 @@ def povecaj_zalogo():
 @post('/povecaj_zalogo')
 def povecaj():
     id = request.forms.id
-    kolicina = request.forms.kolicina
-    if id == '' or kolicina == '':
-        return rtemplate('povecaj_zalogo.html', id='', kolicina='') 
-    else:
+    kolicina = request.forms.kolicina 
+    try:
         cur.execute("UPDATE artikli SET Zaloga = Zaloga + %s WHERE id = %s",(int(kolicina), int(id)))
         conn.commit()
         redirect('/artikli')
+    except:
+        conn.rollback()
+        return rtemplate('povecaj_zalogo.html', id='', kolicina='')
 
 
 
