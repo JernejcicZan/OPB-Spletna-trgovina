@@ -8,12 +8,12 @@
 <p>
   Išči: <input id="isci" type="text" oninput="isci()"/>  
 </p>
-
+<!--
 
 <p>
       <a href="{{ROOT}}oddaj_narocilo" class="myButton">Oddaj naročilo</a>
 </p>
-
+-->
 <p>
   <a href="{{ROOT}}dodaj_artikel" class="myButton">Dodaj nov artikel</a>
 </p>
@@ -32,6 +32,7 @@
         <th>Izdelek</th>
         <th>Zaloga</th>
         <th>Cena</th>
+        <th>Naročilo</th>
   </tr>
 
   %for (id,Izdelek,Zaloga,Cena) in artikli:
@@ -39,7 +40,14 @@
          <td>{{id}}</td>
          <td>{{Izdelek}}</td>
          <td>{{Zaloga}}</td>
-        <td>{{Cena}}</td>
+         <td>{{Cena}}</td>
+         <td>
+          <div class="akcije">
+            <form action="/artikli/naroci/{{id}}" method="get" class="akcija">
+              <a href="#" onclick="this.parentElement.submit()">Naroči</a>
+            </form>
+          </div>
+         </td>
     </tr>
   %end
 </table>

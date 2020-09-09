@@ -85,15 +85,42 @@ def dodaj_artikel():
         conn.rollback()
         return rtemplate('dodaj_artikel.html', id='', Izdelek='', Zaloga='', Cena='')
 
+@get('/artikli/naroci/<id>')
+def naroci_izdelek_get(id):
+    cur.execute("SELECT id FROM artikli WHERE id = %s" %int(id))
+    id_izdelka = cur.fetchone()[0]
+    return rtemplate('oddaj_narocilo.html',id_uporabnika='', id_izdelka=id_izdelka, kolicina='',posiljanje='',nacin_placila=''  )
 
-@get('/oddaj_narocilo')
-def oddaj_narocilo():
-    return rtemplate('oddaj_narocilo.html', id_uporabnika='',izdelek='',kolicina='',posiljanje='',nacin_placila='')
+@post('/artikli/naroci/<id>')
+def naroci_izdelek_post(id_izdelka):
+    uporabnik = request.forms.id_uporabnika
+    izdelek = id
+    kolicina = request.forms.kolicina
+    posiljanje = request.forms.posiljanje
+    nacin_placila = request.forms.nacin_placila
+    try:
+        cur.execute("SELECT Cena FROM artikli WHERE id = %s" %int(izdelek))
+        cena_izdelka = cur.fetchone()[0]
+        cur.execute("UPDATE artikli SET Zaloga = Zaloga - %s WHERE id = %s",(int(kolicina),int(izdelek)))
+        cur.execute("INSERT INTO narocila(stevilka_narocila, uporabnik,izdelek,datum,kolicina,posiljanje,rok_placila,nacin_placila, cena) VALUES(DEFAULT, %s,%s,%s,%s,%s,%s,%s,%s)",
+                    (uporabnik, izdelek, date.today(), kolicina,posiljanje,date.today()+timedelta(days=10), nacin_placila, int(kolicina)*cena_izdelka))
+        conn.commit()   
+        redirect('{0}narocila/'.format(ROOT))
+    except: 
+        conn.rollback()
+        return rtemplate('oddaj_narocilo.html', id_uporabnika='',id_izdelka=id_izdelka,kolicina='',posiljanje='',nacin_placila='')
 
+        
+
+
+#@get('/oddaj_narocilo')
+#def oddaj_narocilo():
+#   return rtemplate('oddaj_narocilo.html', id_uporabnika='',id_izdelka='',kolicina='',posiljanje='',nacin_placila='')
+#
 @post('/oddaj_narocilo')
 def oddaj_narocilo():
     uporabnik = request.forms.id_uporabnika
-    izdelek = request.forms.izdelek
+    izdelek = request.forms.id_izdelka
     kolicina = request.forms.kolicina
     posiljanje = request.forms.posiljanje
     nacin_placila = request.forms.nacin_placila

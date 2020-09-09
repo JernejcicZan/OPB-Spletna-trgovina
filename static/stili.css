@@ -52,3 +52,11 @@ p {
 	text-align: center;
 	min-height: 100vh;
 }
+
+.akcije {
+    display: flex;
+}
+
+.akcija {
+    margin: 0.25rem;
+}
