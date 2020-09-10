@@ -10,9 +10,9 @@ Dodajanje novega artikla
 </p>
 
 <form action="{{ROOT}}dodaj_artikel" method="POST">
-    <p>Izdelek: <input name="Izdelek" type="text" value="{{Izdelek}}"></p>
-    <p>Zaloga: <input name="Zaloga" type="text" value="{{Zaloga}}"></p>
-    <p>Cena: <input name="Cena" type="text" value="{{Cena}}"></p>
+    <p>Izdelek: <input name="Izdelek" type="text" value="{{Izdelek}}" required></p>
+    <p>Zaloga: <input name="Zaloga" type="text" value="{{Zaloga}}" required></p>
+    <p>Cena: <input name="Cena" type="text" value="{{Cena}}" required></p>
     <p><button class="myButton" type="submit" >
         Dodaj artikel
     </button>  </p> 

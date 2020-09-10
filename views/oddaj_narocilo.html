@@ -1,7 +1,9 @@
 %rebase('baza.html', naslov='Oddaj naročilo')
 
+
+
 <form action="{{ROOT}}oddaj_narocilo" method="POST">
-    <p>Id uporabnika: <input name="id_uporabnika" type="text" value="{{id_uporabnika}}"></p>
+    <p>Id uporabnika: <input name="id_uporabnika" type="text" value="{{id_uporabnika}}" required> </p>
 
     <p>Artikel: 
         
@@ -13,7 +15,7 @@
         <input name="id_izdelka" type="hidden" value="{{id_izdelka}}">        
         %end 
     </p>
-    <p>Količina: <input name="kolicina" type="text" value="{{kolicina}}"></p>
+    <p>Količina: <input name="kolicina" type="text" value="{{kolicina}}" required></p>
     <p>    
         <label for="posiljanje">Pošiljanje: </label>
         <select id="posiljanje" name="posiljanje">

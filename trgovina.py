@@ -22,7 +22,7 @@ def rtemplate(*largs, **kwargs):
     """
     return template(ROOT=ROOT, *largs, **kwargs)
 
-
+    
 
 static_dir = "./static"
 @route("/static/<filename:path>")
@@ -57,7 +57,7 @@ def dodaj_uporabnika():
     Naslov = request.forms.Naslov
     Zaposlen = request.forms.Zaposlen
     try:
-        cur.execute("INSERT INTO uporabniki (id, Ime,Priimek,Naslov,Zaposlen) VALUES ((SELECT MAX(id) FROM uporabniki) +1, %s, %s, %s, %s)", 
+        cur.execute("INSERT INTO uporabniki ( id, Ime,Priimek,Naslov,Zaposlen) VALUES ((SELECT MAX(id) FROM uporabniki) +1 , %s, %s, %s, %s)", 
                 (Ime,Priimek,Naslov,Zaposlen))
         conn.commit()
     except:
@@ -72,7 +72,6 @@ def dodaj_artikel():
 
 @post('/dodaj_artikel')
 def dodaj_artikel():
-    id = request.forms.id
     Izdelek = request.forms.Izdelek
     Zaloga = request.forms.Zaloga
     Cena = request.forms.Cena
@@ -82,7 +81,7 @@ def dodaj_artikel():
         conn.commit()   
     except:
         conn.rollback()
-        return rtemplate('dodaj_artikel.html', id='', Izdelek='', Zaloga='', Cena='')
+        return rtemplate('dodaj_artikel.html', Izdelek='', Zaloga='', Cena='')
     redirect('{0}artikli'.format(ROOT))
 
 @get('/artikli/naroci/<id>')
@@ -133,7 +132,7 @@ def oddaj_narocilo():
         conn.commit()   
     except: 
         conn.rollback()
-        return rtemplate('oddaj_narocilo.html', id_uporabnika='',izdelek='',kolicina='',posiljanje='',nacin_placila='')
+        return rtemplate('oddaj_narocilo.html', id_uporabnika='',id_izdelka='',kolicina='',posiljanje='',nacin_placila='')
     redirect('{0}narocila'.format(ROOT))
 
       
@@ -163,7 +162,7 @@ def povecaj():
 
 
 conn = psycopg2.connect(database=auth.db, host=auth.host, user=auth.user, password=auth.password, port=DB_PORT)
-#conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) # onemogočimo transakcije
+#conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) 
 cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
 # poženemo strežnik na podanih vratih, npr. http://localhost:8080/
