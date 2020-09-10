@@ -1,6 +1,6 @@
 from bottle import *
 
-import auth_public as auth
+import auth as auth
 import sqlite3
 from datetime import date,timedelta
 
@@ -57,7 +57,7 @@ def dodaj_uporabnika():
     Naslov = request.forms.Naslov
     Zaposlen = request.forms.Zaposlen
     try:
-        cur.execute("INSERT INTO uporabniki ( id, Ime,Priimek,Naslov,Zaposlen) VALUES ((SELECT MAX(id) FROM uporabniki) +1 , %s, %s, %s, %s)", 
+        cur.execute("INSERT INTO uporabniki (  Ime,Priimek,Naslov,Zaposlen) VALUES ( %s, %s, %s, %s)", 
                 (Ime,Priimek,Naslov,Zaposlen))
         conn.commit()
     except:
@@ -76,7 +76,7 @@ def dodaj_artikel():
     Zaloga = request.forms.Zaloga
     Cena = request.forms.Cena
     try:
-        cur.execute("INSERT INTO artikli(id,Izdelek,Zaloga,Cena) VALUES((SELECT MAX(id) FROM artikli) +1,%s,%s,%s)",
+        cur.execute("INSERT INTO artikli(Izdelek,Zaloga,Cena) VALUES(%s,%s,%s)",
                 (Izdelek,Zaloga,Cena))
         conn.commit()   
     except:
