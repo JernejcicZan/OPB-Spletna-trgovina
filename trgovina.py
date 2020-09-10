@@ -16,6 +16,7 @@ DB_PORT = os.environ.get('POSTGRES_PORT', 5432)
 
 
 
+
 def rtemplate(*largs, **kwargs):
     """
     Izpis predloge s podajanjem spremenljivke ROOT z osnovnim URL-jem.
