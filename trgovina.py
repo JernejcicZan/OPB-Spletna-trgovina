@@ -112,10 +112,10 @@ def naroci_izdelek_post(id_izdelka):
         
 
 
-#@get('/oddaj_narocilo')
-#def oddaj_narocilo():
-#   return rtemplate('oddaj_narocilo.html', id_uporabnika='',id_izdelka='',kolicina='',posiljanje='',nacin_placila='')
-#
+@get('/oddaj_narocilo')
+def oddaj_narocilo():
+   return rtemplate('oddaj_narocilo.html', id_uporabnika='',id_izdelka='',kolicina='',posiljanje='',nacin_placila='')
+
 @post('/oddaj_narocilo')
 def oddaj_narocilo():
     uporabnik = request.forms.id_uporabnika
