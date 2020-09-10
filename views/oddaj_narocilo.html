@@ -6,16 +6,29 @@
     <p>Artikel: 
         
         %if defined('id_izdelka'):        
-        
+        <input name="id_izdelka" type="hidden" value="{{id_izdelka}}">
         {{id_izdelka}}
         
         %else:                 
-        <input name="id_izdelka" type="text" value="{{id_izdelka}}">        
+        <input name="id_izdelka" type="hidden" value="{{id_izdelka}}">        
         %end 
     </p>
     <p>Količina: <input name="kolicina" type="text" value="{{kolicina}}"></p>
-    <p>Pošiljanje: <input name="posiljanje" type="text" value="{{posiljanje}}"></p>
-    <p>Način plačila: <input name="nacin_placila" type="text" value="{{nacin_placila}}"></p>
+    <p>    
+        <label for="posiljanje">Pošiljanje: </label>
+        <select id="posiljanje" name="posiljanje">
+            <option value="True"> Da </option>
+            <option value="False"> Ne </option>
+        </select> 
+    </p>
+    <p>
+        <label for="nacin_placila"> Način plačila: </label>
+        <select id="nacin_placila" name="nacin_placila">
+            <option value="Plačilo po povzetju"> Plačilo po povzetju </option>
+            <option value="Plačilo po predračunu"> Plačilo po predračunu </option>
+            <option value="S kreditno kartico"> S kreditno kartico </option>
+            <option value="PayPal"> PayPal </option>
+        </select> 
     <p>        <button class="myButton" type="submit" >
         Oddaj naročilo
     </button> </p> 

@@ -60,11 +60,11 @@ def dodaj_uporabnika():
         cur.execute("INSERT INTO uporabniki (id, Ime,Priimek,Naslov,Zaposlen) VALUES ((SELECT MAX(id) FROM uporabniki) +1, %s, %s, %s, %s)", 
                 (Ime,Priimek,Naslov,Zaposlen))
         conn.commit()
-        redirect('{0}uporabniki/'.format(ROOT))
     except:
         conn.rollback()
         return rtemplate('dodaj_uporabnika.html',  Ime='', Priimek='', Naslov='', Zaposlen='')
-
+    redirect('{0}uporabniki'.format(ROOT))
+    
 @get('/dodaj_artikel')
 def dodaj_artikel():
     return rtemplate('dodaj_artikel.html', id='', Izdelek='', Zaloga='', Cena='')
@@ -80,10 +80,10 @@ def dodaj_artikel():
         cur.execute("INSERT INTO artikli(id,Izdelek,Zaloga,Cena) VALUES((SELECT MAX(id) FROM artikli) +1,%s,%s,%s)",
                 (Izdelek,Zaloga,Cena))
         conn.commit()   
-        redirect('{0}artikli/'.format(ROOT))
     except:
         conn.rollback()
         return rtemplate('dodaj_artikel.html', id='', Izdelek='', Zaloga='', Cena='')
+    redirect('{0}artikli'.format(ROOT))
 
 @get('/artikli/naroci/<id>')
 def naroci_izdelek_get(id):
@@ -91,10 +91,10 @@ def naroci_izdelek_get(id):
     id_izdelka = cur.fetchone()[0]
     return rtemplate('oddaj_narocilo.html',id_uporabnika='', id_izdelka=id_izdelka, kolicina='',posiljanje='',nacin_placila=''  )
 
-@post('/artikli/naroci/<id>')
+@post('/artikli/naroci/<id_izdelka>')
 def naroci_izdelek_post(id_izdelka):
     uporabnik = request.forms.id_uporabnika
-    izdelek = id
+    izdelek = id_izdelka
     kolicina = request.forms.kolicina
     posiljanje = request.forms.posiljanje
     nacin_placila = request.forms.nacin_placila
@@ -105,10 +105,10 @@ def naroci_izdelek_post(id_izdelka):
         cur.execute("INSERT INTO narocila(stevilka_narocila, uporabnik,izdelek,datum,kolicina,posiljanje,rok_placila,nacin_placila, cena) VALUES(DEFAULT, %s,%s,%s,%s,%s,%s,%s,%s)",
                     (uporabnik, izdelek, date.today(), kolicina,posiljanje,date.today()+timedelta(days=10), nacin_placila, int(kolicina)*cena_izdelka))
         conn.commit()   
-        redirect('{0}narocila/'.format(ROOT))
     except: 
         conn.rollback()
         return rtemplate('oddaj_narocilo.html', id_uporabnika='',id_izdelka=id_izdelka,kolicina='',posiljanje='',nacin_placila='')
+    redirect('{0}narocila'.format(ROOT))
 
         
 
@@ -131,12 +131,12 @@ def oddaj_narocilo():
         cur.execute("INSERT INTO narocila(stevilka_narocila, uporabnik,izdelek,datum,kolicina,posiljanje,rok_placila,nacin_placila, cena) VALUES(DEFAULT, %s,%s,%s,%s,%s,%s,%s,%s)",
                     (uporabnik, izdelek, date.today(), kolicina,posiljanje,date.today()+timedelta(days=10), nacin_placila, int(kolicina)*cena_izdelka))
         conn.commit()   
-        redirect('{0}narocila/'.format(ROOT))
     except: 
         conn.rollback()
         return rtemplate('oddaj_narocilo.html', id_uporabnika='',izdelek='',kolicina='',posiljanje='',nacin_placila='')
+    redirect('{0}narocila'.format(ROOT))
 
-        
+      
 
 @get('/narocila')
 def narocila():
@@ -155,11 +155,11 @@ def povecaj():
     try:
         cur.execute("UPDATE artikli SET Zaloga = Zaloga + %s WHERE id = %s",(int(kolicina), int(id)))
         conn.commit()
-        redirect('{0}artikli/'.format(ROOT))
     except:
         conn.rollback()
         return rtemplate('povecaj_zalogo.html', id='', kolicina='')
 
+    redirect('{0}artikli'.format(ROOT))
 
 
 conn = psycopg2.connect(database=auth.db, host=auth.host, user=auth.user, password=auth.password, port=DB_PORT)

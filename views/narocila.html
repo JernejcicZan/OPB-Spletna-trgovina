@@ -6,6 +6,7 @@
 
 <table class="table table-hover"  >
     <tr>
+        <th>Številka naročila</th>
         <th>uporabnik</th>
         <th>Izdelek</th>
         <th>datum</th>
@@ -13,12 +14,12 @@
         <th>posiljanje</th>
         <th>rok plačila</th>
         <th>način plačila</th>
-        <th>popust</th>
         <th>cena</th>
   </tr>
 
-  %for (uporabnik,izdelek,datum,kolicina, posiljanje, rok_placila, nacin_placila,popust,cena) in narocila:
+  %for (stevilka_narocila, uporabnik,izdelek,datum,kolicina, posiljanje, rok_placila, nacin_placila,cena) in narocila:
     <tr>
+       <td>{{stevilka_narocila}}</td>
        <td>{{uporabnik}}</td>
        <td>{{izdelek}}</td>
        <td>{{datum}}</td>
@@ -26,7 +27,6 @@
        <td>{{posiljanje}}</td>
        <td>{{rok_placila}}</td>
        <td>{{nacin_placila}}</td>
-       <td>{{popust}}</td>
        <td>{{cena}}</td>
     </tr>
   %end
