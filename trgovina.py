@@ -1,6 +1,6 @@
 from bottle import *
 
-import auth as auth
+import auth_public as auth
 import sqlite3
 from datetime import date,timedelta
 
